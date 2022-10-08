@@ -1,0 +1,16 @@
+{
+    "version": "2",
+    "templates": [
+        {
+            "type": 1,
+            "title": "NodeJS-16",
+            "description": "JavaScript-based platform for server-side and networking applications",
+            "categories": ["development"],
+            "platform": "linux",
+            "logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/node.png",
+            "image": "node:16",
+            "interactive": true,
+            "command": "/bin/bash"
+          }
+    ]
+}
