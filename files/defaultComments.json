@@ -1,0 +1,8 @@
+{
+  "comment1": {
+    "name": "Alberto",
+    "pfp": "./assets/img/alex1.png",
+    "review": "5",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum semper convallis."
+  }
+}
