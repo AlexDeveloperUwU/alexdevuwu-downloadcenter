@@ -1,8 +1,20 @@
 {
   "comment1": {
-    "name": "Test",
-    "pfp": "./assets/img/alex1.png",
+    "name": "Mokuba Nyoko",
+    "pfp": "https://vit2bit.live/upload/photos/2024/02/YO8PrNVgDTpNV5jp1uKB_13_d7acad5d9406286a9e319ec3cb971d44_avatar.png?cache=0",
+    "review": "4",
+    "description": "Soy fan de esta gente por no poner anuncios en la plataforma"
+  },
+  "comment2": {
+    "name": "Claudiali",
+    "pfp": "https://vit2bit.live/upload/photos/2024/02/MnmBjMRHI7Ovm9ZnFF8F_15_7b04accb1734b341df50e2015970c62a_avatar.png?cache=0",
     "review": "5",
-    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum semper convallis."
+    "description": "Me hace más fácil compartir videos o audios, está muy bueno por si algún #vtuber quiere tener una nueva red social exclusivo para fans y creadores de contenido."
+  },
+  "comment3": {
+    "name": "Mad Koding",
+    "pfp": "https://pbs.twimg.com/profile_images/1659193833656320004/cKNef_M0_bigger.jpg",
+    "review": "5",
+    "description": "Vit2Bit es una maravillosa plataforma de colaboración, ven y unete a esta magnifica aventura!"
   }
 }
