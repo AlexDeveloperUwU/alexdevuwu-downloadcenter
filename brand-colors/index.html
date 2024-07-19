@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paleta de Colores</title>
+    <!-- Importar Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .sorted {
+            order: var(--order);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+    <div class="max-w-4xl w-full bg-white rounded-lg shadow-md p-6 flex flex-col md:flex-row gap-6">
+        <!-- Color picker y muestra grande -->
+        <div class="flex flex-col items-center w-full md:w-1/3">
+            <h1 class="text-3xl font-bold mb-6 text-center">Paleta de Colores</h1>
+            <input type="color" id="colorPicker" class="mb-4 w-24 h-24">
+            <div id="selectedColor" class="w-full h-32 rounded-lg shadow-md mb-4"></div>
+            <div class="flex justify-center">
+                <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-md mr-2" onclick="adjustColor('lighten')">Aclarar</button>
+                <button class="bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded-md" onclick="adjustColor('darken')">Oscurecer</button>
+            </div>
+        </div>
+
+        <!-- Tabla para los colores con scroll -->
+        <div class="w-full md:w-2/3 overflow-y-auto h-96">
+            <!-- Tabla para los colores originales -->
+            <table class="w-full mb-8 border-collapse border border-gray-300">
+                <caption class="text-xl font-semibold mb-3 text-center">Colores</caption>
+                <thead>
+                    <tr class="bg-gray-100">
+                        <th class="py-2 px-4 border border-gray-300">Color</th>
+                        <th class="py-2 px-4 border border-gray-300">Muestra</th>
+                        <th class="py-2 px-4 border border-gray-300">Descripción</th>
+                        <th class="py-2 px-4 border border-gray-300">Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="colorTableBody">
+                    <!-- Contenido generado por JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const colorPicker = document.getElementById('colorPicker');
+        const selectedColor = document.getElementById('selectedColor');
+        const colorTableBody = document.getElementById('colorTableBody');
+
+        function setColor(color) {
+            colorPicker.value = color;
+            selectedColor.style.backgroundColor = color;
+        }
+
+        function adjustColor(action) {
+            const color = colorPicker.value;
+            let modifiedColor = '';
+            
+            const rgbRegex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
+            const result = rgbRegex.exec(color);
+            
+            let r = parseInt(result[1], 16);
+            let g = parseInt(result[2], 16);
+            let b = parseInt(result[3], 16);
+
+            switch (action) {
+                case 'lighten':
+                    r = Math.min(r + 20, 255);
+                    g = Math.min(g + 20, 255);
+                    b = Math.min(b + 20, 255);
+                    break;
+                case 'darken':
+                    r = Math.max(r - 20, 0);
+                    g = Math.max(g - 20, 0);
+                    b = Math.max(b - 20, 0);
+                    break;
+                default:
+                    break;
+            }
+
+            modifiedColor = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+
+            colorPicker.value = modifiedColor;
+            selectedColor.style.backgroundColor = modifiedColor;
+        }
+
+        function getLuminosity(hex) {
+            const rgbRegex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
+            const result = rgbRegex.exec(hex);
+
+            const r = parseInt(result[1], 16) / 255;
+            const g = parseInt(result[2], 16) / 255;
+            const b = parseInt(result[3], 16) / 255;
+
+            const luminosity = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+            return luminosity;
+        }
+
+        function sortColors() {
+            const rows = Array.from(colorTableBody.getElementsByTagName('tr'));
+            rows.sort((a, b) => {
+                const colorA = a.cells[0].innerText;
+                const colorB = b.cells[0].innerText;
+                return getLuminosity(colorB) - getLuminosity(colorA);
+            });
+            rows.forEach((row, index) => {
+                row.style.setProperty('--order', index);
+                colorTableBody.appendChild(row);
+            });
+        }
+
+        async function loadColors() {
+            try {
+                const response = await fetch('colors.json');
+                const colors = await response.json();
+
+                colors.forEach(color => {
+                    const row = document.createElement('tr');
+                    row.classList.add('sorted');
+                    row.innerHTML = `
+                        <td class="py-2 px-4 border border-gray-300">${color.color}</td>
+                        <td class="py-2 px-4 border border-gray-300"><div class="w-10 h-10 rounded-md shadow-md" style="background-color: ${color.color};"></div></td>
+                        <td class="py-2 px-4 border border-gray-300">${color.description}</td>
+                        <td class="py-2 px-4 border border-gray-300"><button class="bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-md" onclick="setColor('${color.color}')">Seleccionar</button></td>
+                    `;
+                    colorTableBody.appendChild(row);
+                });
+
+                sortColors();
+            } catch (error) {
+                console.error('Error al cargar los colores:', error);
+            }
+        }
+
+        window.onload = () => {
+            loadColors();
+            setColor(colorPicker.value);
+        };
+    </script>
+</body>
+</html>
