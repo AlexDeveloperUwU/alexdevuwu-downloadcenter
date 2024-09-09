@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlipDown Countdown</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #151515;
+    }
+
+    .flipdown {
+      margin: auto;
+    }
+
+    .flipdown__theme-dark {
+      color: #FFFFFF; /* Color del texto del countdown */
+    }
+
+    .flipdown__theme-dark .flipdown__digit {
+      background-color: #333;
+      color: #FFF;
+    }
+
+    /* Estilo general para asegurarse de que el texto en todo el documento sea blanco */
+    body {
+      color: #FFFFFF;
+    }
+  </style>
+</head>
+<body>
+  <div id="flipdown" class="flipdown"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/flipdown/dist/flipdown.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Fecha del 11 de septiembre de este año en formato Unix (en segundos)
+      var countdownDate = new Date('September 11, ' + new Date().getFullYear()).getTime() / 1000;
+
+      // Inicializar FlipDown
+      var flipdown = new FlipDown(countdownDate)
+        .start()
+        .ifEnded(() => {
+          console.log('¡El countdown ha terminado!');
+        });
+
+      // Asignar tema oscuro
+      document.body.classList.add('dark-theme');
+      document.getElementById('flipdown').classList.add('flipdown__theme-dark');
+    });
+  </script>
+</body>
+</html>
